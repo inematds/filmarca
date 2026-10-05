@@ -1,0 +1,21 @@
+{
+  "name": "filmarca",
+  "version": "0.1.0",
+  "description": "Do site ao filme da marca: lê o DNA visual de um site e gera um filme de produto em 16:9, 9:16 e 1:1 com HyperFrames, usando a IA da sua assinatura (Claude Code ou Codex).",
+  "type": "module",
+  "bin": {
+    "filmarca": "bin/filmarca.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "hyperframes": "^0.8.134",
+    "playwright": "^1.63.0"
+  }
+}
