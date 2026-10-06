@@ -4,6 +4,10 @@
 
 **🇧🇷 [Português](README.md) · 🇺🇸 [English](README.en.md) · 🇪🇸 [Español](README.es.md)**
 
+## What it is
+
+filmarca is a free tool that turns a company or product website into a short brand video. You give it the address; it picks up the site's colors, fonts, logo and copy, and AI writes the script and builds the animated scenes. It is for anyone who needs a video for social media or their own site and has no video editor. It runs on your computer and needs Node.js plus a Claude Code or Codex subscription, with no API fees.
+
 **From website to brand film.** Point it at a URL: filmarca reads the site's colors, fonts, logo, text and screenshots, writes the script, animates the scenes and delivers the MP4 in 16:9, 9:16 and 1:1, in Portuguese, English and Spanish. The AI runs on **your subscription** (Claude Code or Codex), no API key, and rendering is local, with [HyperFrames](https://hyperframes.dev).
 
 ## 📖 User guide

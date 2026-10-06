@@ -4,6 +4,10 @@
 
 **🇧🇷 [Português](README.md) · 🇺🇸 [English](README.en.md) · 🇪🇸 [Español](README.es.md)**
 
+## O que é
+
+O filmarca é uma ferramenta gratuita que transforma o site de uma empresa ou produto num vídeo curto de apresentação da marca. Você informa o endereço; ele copia as cores, as fontes, o logo e os textos do site, e a inteligência artificial escreve o roteiro e monta as cenas animadas. Serve para quem precisa de um vídeo para redes sociais ou para o próprio site e não tem editor de vídeo. Roda no seu computador e precisa do Node.js e de uma assinatura do Claude Code ou do Codex, sem pagar API.
+
 **Do site ao filme da marca.** Aponte um endereço: o filmarca lê cores, fontes, logo, textos e prints do site, escreve o roteiro, anima as cenas e entrega o MP4 em 16:9, 9:16 e 1:1, em português, inglês e espanhol. A IA roda pela **sua assinatura** (Claude Code ou Codex), sem chave de API, e o render é local, com o [HyperFrames](https://hyperframes.dev).
 
 ## 📖 Guia de uso
