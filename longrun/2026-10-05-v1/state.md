@@ -1,6 +1,3 @@
-# Estado — 2026-10-05 ~18:55
-Feito e testado: dna.mjs (inema.club ok), projeto.mjs (composição HF, 3 formatos), modelos.mjs (6 cenas-modelo validadas), validar.mjs (estático + execução), render HF 16:9 ok (22 s em 7 s).
-Escrito, sem teste com IA: ia.mjs, filme.mjs, prompts/, bin/filmarca.mjs.
-Parou: limite de sessão do claude -p (429, volta às 21h).
-Próximo: 1) logo em texto quando não há logo (fazerCenas); 2) rodar `node bin/filmarca.mjs fazer https://inema.club --out ~/projetos/output/filmarca/teste1 --rascunho` (ou --motor codex); 3) teste de reserva (test/), README, LICENSE MIT; 4) repo inematds/filmarca, guia PT/EN/ES, portal.
-Armadilhas: page.evaluate não pode devolver objeto GSAP/FontFaceSet (trava); o harness precisa de html/body 100%; um index por pasta (lint).
+# Estado — 2026-10-05 21:30 — CONCLUÍDO (v0.1)
+Critérios do goal: 1 DNA ok · 2 make → 9 MP4 (3 idiomas × 3 formatos, dims e 30,5 s conferidos) · 3 lint 0 erros (avisos de estilo) · 4 `npm test` 5/5 (cena quebrada recusada, reserva passa, palavra partida pega) · 5 grep de API vazio · 6 en/es gerados · 7 demo gerado pela ferramenta (docs/) · 8 Pages 200 nas 3 URLs · 9 portal f1f64cb + 0b5554b (EN/ES), inemabuscas 54734d5, inemapro 0d30f75.
+Próximos (não pedidos): narração por cena, ler repo GitHub/brand book, estúdio web.
