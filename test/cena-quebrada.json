@@ -1,0 +1,9 @@
+{
+  "id": "q1",
+  "tipo": "livre",
+  "duracao": 3,
+  "textos": { "frase": "Oi" },
+  "css": ".f{font-size:8cqmin;animation: piscar 1s infinite}\n@keyframes piscar{to{opacity:0}}",
+  "html": "<div class=\"f\">{{frase}} {{inventado}}</div>",
+  "js": "fetch('https://exemplo.com/x');\ntl.to(q('.f'),{x: Math.random()*100, duration:1},0);"
+}

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { pedirJSON } from './ia.mjs';
 import { cenaModelo, MODELOS } from './modelos.mjs';
 import { validarEstatico, validarExecucao, abrirNavegador } from './validar.mjs';
-import { composicao, prepararAssets, FORMATOS } from './projeto.mjs';
+import { composicao, prepararAssets, fontesCSS, FORMATOS } from './projeto.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const prompt = (n) => fs.readFileSync(path.join(RAIZ, 'prompts', `${n}.md`), 'utf8');
@@ -83,12 +83,31 @@ async function emLotes(itens, n, fn) {
   return saida;
 }
 
+/** Site sem logo em imagem: desenha o nome da marca com a fonte de título e a cor da marca (PNG transparente). */
+async function logoEmTexto(dir, marca, browser) {
+  const fontes = fontesCSS(marca);
+  const page = await browser.newPage({ viewport: { width: 2400, height: 400 } });
+  try {
+    const html = `<html><head><style>${fontes.css.replace(/url\("/g, `url("file://${dir}/`)}html,body{margin:0;background:transparent}
+span{display:inline-block;padding:20px 30px;font-family:"${fontes.titulo}",system-ui,sans-serif;font-weight:800;font-size:200px;line-height:1;color:${marca.cores.tinta};letter-spacing:-.02em;white-space:nowrap}
+b{color:${marca.cores.primaria};font-weight:800}</style></head><body><span id="m"></span></body></html>`;
+    await page.setContent(html);
+    await page.evaluate((nome) => { const [a, ...b] = nome.split('.'); const m = document.getElementById('m'); m.textContent = a; if (b.length) { const x = document.createElement('b'); x.textContent = '.' + b.join('.'); m.append(x); } }, marca.nome);
+    await page.evaluate(() => document.fonts.ready.then(() => 1));
+    await page.locator('#m').screenshot({ path: path.join(dir, 'assets/logo-texto.png'), omitBackground: true });
+  } finally { await page.close(); }
+  marca.logo = 'assets/logo-texto.png';
+  marca.logoGerado = true;
+  gravar(path.join(dir, 'marca.json'), marca);
+}
+
 export async function fazerCenas(dir, { motor = 'claude', paralelo = 3, so = null, log = console.log } = {}) {
   const marca = ler(path.join(dir, 'marca.json'));
   const roteiro = ler(path.join(dir, 'roteiro.json'));
   prepararAssets(dir);
   const browser = await abrirNavegador();
   try {
+    if (!marca.logo || marca.logoGerado) { await logoEmTexto(dir, marca, browser); log(`  logo: o site não tem logo em imagem; gerei "${marca.nome}" em texto`); }
     const alvo = roteiro.cenas.filter((c) => !so || so.includes(c.id));
     const prontas = await emLotes(alvo, paralelo, (c) => cenaValidada(c, marca, roteiro, dir, browser, { motor, log }));
     for (const c of prontas) gravarCena(dir, c);

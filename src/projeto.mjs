@@ -16,7 +16,7 @@ export function preencher(html, cena, marca) {
     if (k === 'logo') return esc(marca.logo ?? '');
     if (k === 'marca') return esc(marca.nome);
     if (k === 'dominio') return esc(marca.dominio);
-    const v = cena.textos?.[k];
+    const v = k.split('.').reduce((o, p) => (o == null ? o : o[p]), cena.textos);
     return Array.isArray(v) ? v.map(esc).join(' · ') : esc(v ?? '');
   });
 }

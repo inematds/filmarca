@@ -7,10 +7,11 @@ Você anima UMA cena de um filme de produto. A cena é um pedaço de HTML + CSS 
 - Fonte do título entre 5 e 12 `cqmin`; texto de apoio entre 3 e 5 `cqmin`.
 - Para layout diferente no vertical, use `@container (aspect-ratio < 1) { ... }`.
 - Todo texto precisa caber no quadro nos três formatos. Margem lateral mínima de 6cqw.
+- Nunca parta palavra ao meio: não use `word-break: break-all` nem `overflow-wrap: anywhere`. Em caixa estreita (cartão, coluna), reduza a fonte ou empilhe os cartões no vertical/quadrado com `@container`.
 
 **CSS.** Escreva seletores simples (`.titulo`, `.cartao span`); eles são automaticamente aninhados dentro da cena, então não colidem com outras cenas. Use as variáveis da marca: `var(--fundo)`, `var(--tinta)`, `var(--primaria)`, `var(--destaque)`, `var(--suave)`, `var(--fonte-titulo)`, `var(--fonte-texto)`. Pode usar `color-mix()`, gradientes, `clip-path`, `box-shadow`, SVG inline. PROIBIDO: `@keyframes`, `animation`, `transition`, `@font-face`, `@import`, `url()` externa.
 
-**HTML.** Só a marcação interna da cena (sem `<section>`, sem `<style>`, sem `<script>`). TODO texto visível entra por marcador `{{chave}}`, usando as chaves de `textos` da cena — nunca escreva o texto literal no HTML (é assim que o filme é traduzido sem refazer o código). Marcadores extras disponíveis: `{{logo}}` (caminho do logo, para `<img src="{{logo}}">`), `{{midia}}` (caminho do print da cena), `{{marca}}`, `{{dominio}}`. Pode usar `<svg>` inline com formas. PROIBIDO: `<script>`, `<style>`, `<iframe>`, `<video>`, `<audio>`, atributos `on*`, qualquer `src`/`href` externo.
+**HTML.** Só a marcação interna da cena (sem `<section>`, sem `<style>`, sem `<script>`). TODO texto visível entra por marcador `{{chave}}`, usando as chaves de `textos` da cena (item de lista: `{{itens.0}}`, `{{itens.1}}`…) — nunca escreva o texto literal no HTML (é assim que o filme é traduzido sem refazer o código). Marcadores extras disponíveis: `{{logo}}` (caminho do logo, para `<img src="{{logo}}">`), `{{midia}}` (caminho do print da cena), `{{marca}}`, `{{dominio}}`. Pode usar `<svg>` inline com formas. PROIBIDO: `<script>`, `<style>`, `<iframe>`, `<video>`, `<audio>`, atributos `on*`, qualquer `src`/`href` externo.
 
 **JS.** É o CORPO de uma função `(tl, q, qa, D, gsap)`:
 - `tl` = linha do tempo GSAP da cena (pausada; o tempo 0 é o início da cena). Coloque TODAS as animações nela com posição explícita: `tl.fromTo(q('.titulo'), {opacity:0, y:40}, {opacity:1, y:0, duration:0.8, ease:'power3.out'}, 0.3)`.

@@ -1,3 +1,4 @@
 node_modules/
 tmp/
 *.mp4
+!docs/*.mp4

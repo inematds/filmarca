@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>filmarca — del sitio web a la película de tu marca</title>
+<meta name="description" content="filmarca lee el ADN visual de un sitio web y genera una película de producto en 16:9, 9:16 y 1:1, en PT, EN y ES, con la IA de tu suscripción (Claude Code o Codex), sin clave de API.">
+<link rel="alternate" hreflang="pt-BR" href="https://inematds.github.io/filmarca/guia/">
+<link rel="alternate" hreflang="en" href="https://inematds.github.io/filmarca/guia/en/">
+<link rel="alternate" hreflang="es" href="https://inematds.github.io/filmarca/guia/es/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c10; --bg2:#14141b; --card:#16161e; --line:#272730;
+    --txt:#e9e9ee; --mut:#9a9aa6; --amb:#E2A23B; --amb2:#f0c070; --sky:#38bdf8; --pro:#cbd5e1;
+    color-scheme:dark;
+  }
+  body.light{
+    --bg:#f6f7f9; --bg2:#eceef2; --card:#ffffff; --line:#e1e3ea;
+    --txt:#1a1a22; --mut:#5b5b68; --amb:#b9791d; --amb2:#a16207; --sky:#0369a1; --pro:#b45309;
+    color-scheme:light;
+  }
+  body.light .hero .glow{opacity:.5}
+  body.light pre{background:#0e0e14;color:#d6d6e0}
+  body.light pre .c{color:#8a8a98}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Sora,sans-serif;line-height:1.15;margin:0}
+  a{color:var(--amb);text-decoration:none}
+  code,pre{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+  .mut{color:var(--mut)} .amb{color:var(--amb)}
+  .chip{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);font-weight:600;font-family:Sora}
+  nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(12,12,16,.78);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+  nav .brand{display:flex;align-items:center;gap:8px;font-family:Sora;font-weight:800;letter-spacing:-.02em;color:var(--amb)}
+  nav .brand .emoji{font-size:1.25rem}
+  nav .sep{color:var(--mut);opacity:.45}
+  nav .inema{color:var(--sky);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .inema:hover{filter:brightness(1.15)}
+  nav .pro{color:var(--pro);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .pro:hover{filter:brightness(1.15)}
+  nav .clubpro{display:inline-flex;align-items:center;gap:6px}
+  nav .links{margin-left:auto;display:flex;align-items:center;gap:20px;font-size:.92rem}
+  nav .links a.sec{color:var(--mut)} nav .links a.sec:hover{color:var(--txt)}
+  .lang{display:inline-flex;gap:2px;font-family:Sora;font-size:.78rem}
+  .lang a{color:var(--mut);padding:.2em .45em;border-radius:6px} .lang a.on{color:var(--amb);background:rgba(226,162,59,.12)}
+  .tgl{background:var(--bg2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem}
+  .tgl:hover{border-color:var(--amb)}
+  .btn{display:inline-block;background:var(--amb);color:#1a1206;font-weight:600;padding:.6em 1.05em;border-radius:10px;font-family:Sora}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  @media(max-width:760px){nav .links a.sec{display:none}}
+  @media(max-width:520px){nav .wrap{gap:8px;padding:8px 14px;height:auto;flex-wrap:wrap} nav .links{gap:8px;margin-left:0;width:100%;justify-content:space-between} nav .btn{padding:.45em .7em;font-size:.82rem} .tgl{width:34px;height:34px}}
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero .glow{position:absolute;inset:-40% -20% auto auto;width:70%;height:600px;background:radial-gradient(closest-side,rgba(226,162,59,.22),transparent 70%);pointer-events:none}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:74px 22px}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.025em}
+  .hero p.lead{font-size:1.18rem;color:var(--mut);margin:1.1em 0 1.6em;max-width:34ch}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000}
+  .hero figure img{width:100%;display:block}
+  @media(max-width:780px){.hero .wrap{grid-template-columns:1fr;padding:48px 22px}}
+  section{padding:62px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+  section .sub{color:var(--mut);margin:.6em 0 2em;max-width:62ch}
+  .grid{display:grid;gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:820px){.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:540px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{font-size:1.05rem;margin-bottom:.4em}
+  .card p{color:var(--mut);font-size:.92rem;margin:0}
+  .num{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:8px;background:rgba(226,162,59,.14);color:var(--amb);font-family:Sora;font-weight:800;font-size:.9rem;margin-bottom:.7em}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .flow span{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:.45em .9em;font-size:.85rem;font-family:Sora;font-weight:600}
+  .flow .arr{color:var(--amb);border:none;background:none;padding:0 .1em}
+  pre{background:#0a0a0e;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;font-size:.86rem;line-height:1.6;color:#d6d6e0}
+  pre .c{color:#6f6f7c} pre .k{color:var(--amb2)} pre .s{color:#9ece6a}
+  .step{display:grid;grid-template-columns:46px minmax(0,1fr);gap:16px;margin-bottom:26px}
+  .step>div,.card{min-width:0}
+  p code,li code,td code{overflow-wrap:anywhere}
+  .step .b{width:46px;height:46px;border-radius:12px;background:var(--amb);color:#1a1206;font-family:Sora;font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+  .step h3{font-size:1.12rem;margin-bottom:.3em}
+  .step p{color:var(--mut);margin:.2em 0 .7em}
+  .ex{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:680px){.ex{grid-template-columns:1fr}}
+  .ex figure{margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  .ex figure img{width:100%;display:block}
+  .ex figcaption{padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)}
+  .phase{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .phase:last-child{border:none}
+  .phase .tag{flex:0 0 92px;font-family:Sora;font-weight:800;color:var(--amb)}
+  .phase .d strong{display:block;margin-bottom:.2em}
+  .phase .d span{color:var(--mut);font-size:.92rem}
+  footer{padding:46px 0;text-align:center;color:var(--mut);font-size:.9rem}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.3em .8em;font-size:.78rem;color:var(--mut);margin:0 4px}
+  video{width:100%;display:block;border-radius:14px;border:1px solid var(--line);background:#000}
+  .vid{display:grid;grid-template-columns:2.2fr 1fr;gap:18px;align-items:start;margin-bottom:22px}
+  @media(max-width:680px){.vid{grid-template-columns:1fr}}
+  table.cmp{width:100%;border-collapse:collapse;font-size:.92rem} table.cmp th,table.cmp td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+  table.cmp th{font-family:Sora;color:var(--amb);font-weight:600} table.cmp td:first-child{color:var(--mut)}
+  .tblwrap{overflow-x:auto}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top"><span class="emoji">🎬</span> filmarca</a>
+  <span class="sep">|</span>
+  <span class="clubpro">
+    <a class="inema" href="https://inema.club" target="_blank" rel="noopener">INEMA.CLUB</a>
+    <span class="sep">-</span>
+    <a class="pro" href="https://inema.pro" target="_blank" rel="noopener">PRO</a>
+  </span>
+  <div class="links">
+    <a class="sec" href="#oque">Qué es</a>
+    <a class="sec" href="#fluxo">Cómo funciona</a>
+    <a class="sec" href="#guia">Guía de uso</a>
+    <a class="sec" href="#exemplos">Ejemplos</a>
+    <a class="sec" href="#roadmap">Roadmap</a>
+    <span class="lang"><a href="../">PT</a><a href="../en/">EN</a><a class="on" href="./">ES</a></span>
+    <button class="tgl" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
+    <a class="btn" href="https://github.com/inematds/filmarca" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div></nav>
+
+<header class="hero" id="top">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div>
+      <span class="chip">Video con IA · código abierto</span>
+      <h1>Tu sitio web se convierte en la <span class="amb">película</span> de tu marca</h1>
+      <p class="lead">Indica una dirección. filmarca lee los colores, las fuentes, el logo, los textos y las capturas del sitio, escribe el guion, anima las escenas y entrega el MP4 en 16:9, 9:16 y 1:1, en portugués, inglés y español.</p>
+      <div class="cta">
+        <a class="btn" href="#guia">Empezar la guía</a>
+        <a class="btn ghost" href="https://github.com/inematds/filmarca" target="_blank" rel="noopener">Ver en GitHub</a>
+      </div>
+    </div>
+    <figure><img src="../assets/banner-es.jpg" alt="Banner: el sitio web se convierte en película"></figure>
+  </div>
+</header>
+
+<section id="oque"><div class="wrap">
+  <span class="chip">Qué es</span>
+  <h2>Un director de películas de producto que corre en tu computadora</h2>
+  <p class="sub">Una herramienta de línea de comandos que convierte un sitio web en un video de presentación de la marca. La IA escribe el guion y el código de cada escena; filmarca revisa cada escena antes de aceptarla y lo renderiza todo de forma local con HyperFrames.</p>
+  <figure style="margin:0 0 26px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000"><img src="../assets/banner-grade-es.jpg" alt="Lee el sitio, guion con IA, escenas animadas, validación, 3 formatos, PT EN ES" loading="lazy" style="width:100%;display:block"></figure>
+  <div class="grid g3">
+    <div class="card"><h3>🔑 Sin clave de API</h3><p>Usa la IA de tu suscripción: Claude Code (<code>claude -p</code>) o Codex (<code>codex exec</code>) ya con sesión iniciada en tu máquina. No se lee ni se envía ninguna clave.</p></div>
+    <div class="card"><h3>🛡️ La escena solo entra si pasa</h3><p>Cada escena de la IA se revisa en el navegador en los tres formatos: sin red, sin reloj, sin texto fuera del cuadro, sin palabras partidas. Si falla, la IA la corrige una vez; si vuelve a fallar, entra una escena modelo.</p></div>
+    <div class="card"><h3>🌎 Tres formatos, tres idiomas</h3><p>El mismo código de escena sirve en 16:9, 9:16 y 1:1 (medidas relativas al cuadro). Los textos quedan fuera del código, así que traducir a EN/ES cambia solo las frases.</p></div>
+  </div>
+</div></section>
+
+<section id="fluxo"><div class="wrap">
+  <span class="chip">Cómo funciona</span>
+  <h2>De la dirección al MP4 en cinco etapas</h2>
+  <p class="sub">Cada etapa guarda archivos en la carpeta de la película (<code>marca.json</code>, <code>roteiro.json</code>, <code>cenas/</code>, <code>renders/</code>), así que puedes rehacer solo una de ellas.</p>
+  <div class="flow">
+    <span>ADN del sitio</span><span class="arr">→</span>
+    <span>Guion (director)</span><span class="arr">→</span>
+    <span>Escenas (IA, 3 a la vez)</span><span class="arr">→</span>
+    <span>Validación + reparación</span><span class="arr">→</span>
+    <span>Traducción de los textos</span><span class="arr">→</span>
+    <span>Render HyperFrames</span>
+  </div>
+  <div class="grid g3" style="margin-top:26px">
+    <div class="card"><div class="num">1</div><h3>ADN del sitio</h3><p>El Chromium de Playwright abre el sitio y mide: color de fondo, de texto y de los botones, familias tipográficas (descarga los archivos), logo, títulos, párrafos, números, y toma capturas de la parte superior, de tres franjas y de la versión móvil. Si no hay logo en imagen, genera un logotipo en texto.</p></div>
+    <div class="card"><div class="num">2</div><h3>Guion y escenas</h3><p>El director escribe el concepto y las escenas (apertura, título, número, captura, lista, libre, llamada) solo con hechos del sitio. Después cada escena se convierte en HTML + CSS + GSAP, escrita por la IA siguiendo un contrato cerrado.</p></div>
+    <div class="card"><div class="num">3</div><h3>Revisión y render</h3><p>Cada escena se ejecuta sola en el navegador en los tres formatos. Una vez aprobadas, se convierten en una composición HyperFrames por idioma y formato, pasan por <code>hyperframes lint</code> y salen en MP4.</p></div>
+  </div>
+</div></section>
+
+<section id="pre"><div class="wrap">
+  <span class="chip">Requisitos previos</span>
+  <h2>Lo que debe estar en tu máquina</h2>
+  <p class="sub">Linux, macOS o Windows (WSL). La primera ejecución descarga el Chromium de Playwright.</p>
+  <div class="grid g3">
+    <div class="card"><h3>Node.js 22+ y FFmpeg</h3><p>HyperFrames exige Node 22 o superior y FFmpeg en el PATH.</p><pre><span class="k">node</span> -v   <span class="c"># v22 o superior</span>
+<span class="k">ffmpeg</span> -version</pre></div>
+    <div class="card"><h3>Claude Code o Codex con sesión iniciada</h3><p>La IA corre con tu suscripción. Basta con que uno de los dos funcione en la terminal.</p><pre><span class="k">claude</span> -p <span class="s">"di ok"</span>
+<span class="c"># o</span>
+<span class="k">codex</span> exec <span class="s">"di ok"</span></pre></div>
+    <div class="card"><h3>filmarca</h3><p>Clona, instala y descarga el navegador una sola vez.</p><pre><span class="k">git</span> clone https://github.com/inematds/filmarca
+<span class="k">cd</span> filmarca && <span class="k">npm</span> i
+<span class="k">npx</span> playwright install chromium</pre></div>
+  </div>
+</div></section>
+
+<section id="guia"><div class="wrap">
+  <span class="chip">Guía de uso · paso a paso</span>
+  <h2>De la primera película a la versión final</h2>
+  <p class="sub">Todos los comandos se ejecutan desde dentro de la carpeta de filmarca. Sin <code>--out</code>, la película va a <code>~/projetos/output/filmarca/&lt;sitio&gt;-&lt;fecha&gt;</code>.</p>
+
+  <div class="step"><div class="b">1</div><div>
+    <h3>Haz la primera película (borrador)</h3>
+    <p>Un solo comando hace todo. <code>--rascunho</code> renderiza rápido para que lo revises; tarda unos 3 minutos para 30 s de película.</p>
+<pre><span class="k">node</span> bin/filmarca.mjs fazer https://seusite.com --out ~/filmes/seusite --duracao 30 --rascunho
+<span class="c"># 1/4 DNA da marca → 2/4 roteiro → 3/4 cenas (c1 ✓ aprovada …) → 4/4 render</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">2</div><div>
+    <h3>Indica qué debe contar la película</h3>
+    <p><code>--pedido</code> orienta al director (público, énfasis, tono). <code>--motor codex</code> usa Codex en lugar de Claude.</p>
+<pre><span class="k">node</span> bin/filmarca.mjs fazer https://seusite.com --pedido <span class="s">"lanzamiento del plan anual, para quienes ya conocen la marca"</span> --motor codex</pre>
+  </div></div>
+
+  <div class="step"><div class="b">3</div><div>
+    <h3>Revisa las escenas</h3>
+    <p>Abre <code>revisao.html</code> en la carpeta de la película: cada escena aparece en 16:9 y 9:16, con los textos, la dirección, la versión y si fue escrita por la IA o es una escena modelo.</p>
+<pre><span class="k">xdg-open</span> ~/filmes/seusite/revisao.html   <span class="c"># en macOS: open</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">4</div><div>
+    <h3>Cambia una escena con texto (y deshaz si no te gusta)</h3>
+    <p>El cambio pasa por la misma revisión. Cada versión queda guardada en <code>cenas/c3.vN.json</code>.</p>
+<pre><span class="k">node</span> bin/filmarca.mjs editar ~/filmes/seusite c3 <span class="s">"el número entra contando y un anillo se cierra a su alrededor"</span>
+<span class="k">node</span> bin/filmarca.mjs voltar ~/filmes/seusite c3 1   <span class="c"># vuelve a la versión 1</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">5</div><div>
+    <h3>Traduce a inglés y español</h3>
+    <p>Solo se traducen los textos; el código de las escenas es el mismo. A la hora del render, cada escena se revisa de nuevo en el idioma (una frase más larga no puede desbordar el cuadro).</p>
+<pre><span class="k">node</span> bin/filmarca.mjs traduzir ~/filmes/seusite --lang en
+<span class="k">node</span> bin/filmarca.mjs traduzir ~/filmes/seusite --lang es</pre>
+  </div></div>
+
+  <div class="step"><div class="b">6</div><div>
+    <h3>Render final, con música si quieres</h3>
+    <p>Sin <code>--rascunho</code> la calidad es la normal de HyperFrames. <code>--trilha</code> pone una música (MP3/WAV) de fondo en toda la película.</p>
+<pre><span class="k">node</span> bin/filmarca.mjs render ~/filmes/seusite --langs pt,en,es --trilha musica.mp3
+<span class="c"># renders/&lt;titulo&gt;-pt-16x9.mp4, -pt-9x16.mp4, -pt-1x1.mp4, … (9 archivos)</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">7</div><div>
+    <h3>Elige el modelo</h3>
+    <p>Por defecto, el director y las escenas usan el modelo "tope" y la traducción el "menor", leídos de <code>~/.config/inema/modelos.env</code> cuando existe. Para forzar un modelo en todo:</p>
+<pre><span class="k">FILMARCA_MODELO</span>=sonnet <span class="k">node</span> bin/filmarca.mjs cenas ~/filmes/seusite --so c2,c5</pre>
+  </div></div>
+</div></section>
+
+<section id="exemplos"><div class="wrap">
+  <span class="chip">Ejemplos</span>
+  <h2>La película de inema.club, hecha por la propia herramienta</h2>
+  <p class="sub">Nada aquí fue animado a mano: filmarca leyó inema.club, la IA escribió las 8 escenas y todas pasaron la revisión. Tiempo total del borrador: 2,7 minutos.</p>
+  <div class="vid">
+    <video src="../../docs/demo-es-16x9.mp4" poster="../../docs/demo-poster.jpg" controls muted playsinline preload="none"></video>
+    <video src="../../docs/demo-pt-9x16.mp4" controls muted playsinline preload="none"></video>
+  </div>
+  <div class="ex">
+    <figure><img src="../assets/ex-cenas.jpg" alt="Nueve cuadros de la película de inema.club" loading="lazy"><figcaption>Cuadros de la película en 16:9: apertura, título, palabras que se intercambian, lista en tarjetas, captura real del sitio, línea de pasos y llamada final.</figcaption></figure>
+    <figure><img src="../assets/ex-formatos.jpg" alt="La misma escena en 16:9, 9:16 y 1:1" loading="lazy"><figcaption>La misma escena en los tres formatos. El código es uno solo: las medidas son relativas al cuadro.</figcaption></figure>
+    <figure><img src="../assets/ex-idiomas.jpg" alt="La misma escena en portugués, inglés y español" loading="lazy"><figcaption>La misma escena en PT, EN y ES: la traducción cambia solo las frases.</figcaption></figure>
+    <figure><div class="card" style="border:none;border-radius:0"><h3>De dónde vino la idea</h3><p>El método (leer el diseño del sitio, escribir un guion y animar escena por escena con revisión) se inspiró en el proyecto <a href="https://github.com/noeltg77/motive" target="_blank" rel="noopener">Motive</a>. Como no tiene licencia, filmarca se escribió desde cero, con otras decisiones:</p>
+      <div class="tblwrap"><table class="cmp"><tr><th></th><th>filmarca</th></tr>
+      <tr><td>IA</td><td>suscripción (Claude Code o Codex), sin clave</td></tr>
+      <tr><td>Render</td><td>HyperFrames (HTML + GSAP), sin licencia comercial</td></tr>
+      <tr><td>Revisión</td><td>navegador en los 3 formatos + lint de HyperFrames</td></tr>
+      <tr><td>Idiomas</td><td>PT, EN y ES a partir del mismo código de escena</td></tr>
+      <tr><td>Licencia</td><td>MIT</td></tr></table></div></div><figcaption>filmarca no copia código ni prompts de Motive.</figcaption></figure>
+  </div>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <span class="chip">Roadmap</span>
+  <h2>Lo que ya existe y lo que viene</h2>
+  <p class="sub">La versión 0.1 es la línea de comandos completa. Las próximas etapas siguen abiertas.</p>
+  <div class="phase"><div class="tag">v0.1 ✓</div><div class="d"><strong>Línea de montaje completa</strong><span>ADN del sitio, guion, escenas validadas con reparación y respaldo, edición con versiones, traducción PT/EN/ES, render 16:9, 9:16 y 1:1, música opcional, página de revisión y pruebas automáticas.</span></div></div>
+  <div class="phase"><div class="tag">próximo</div><div class="d"><strong>Narración</strong><span>Voz por escena con TTS local (inemavox o <code>hyperframes tts</code>), con la duración de la escena siguiendo el habla.</span></div></div>
+  <div class="phase"><div class="tag">próximo</div><div class="d"><strong>Más fuentes</strong><span>Leer un repositorio de GitHub o un brand book en HTML, además del sitio web.</span></div></div>
+  <div class="phase"><div class="tag">idea</div><div class="d"><strong>Estudio en el navegador</strong><span>Vista previa con línea de tiempo, edición de escena con un clic e historial de versiones.</span></div></div>
+</div></section>
+
+<footer>
+  <div class="wrap">
+    <div class="pill">Node.js</div><div class="pill">Playwright</div><div class="pill">HyperFrames + GSAP</div><div class="pill">Claude Code / Codex</div>
+    <p style="margin-top:18px">filmarca · código abierto (MIT) ·
+      <a href="https://github.com/inematds/filmarca">inematds/filmarca</a> ·
+      <a href="https://inema.club">INEMA.CLUB</a></p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var KEY='filmarca-theme'; // cambia filmarca por el nombre del proyecto
+    var b=document.body, t=document.getElementById('themeToggle');
+    if(localStorage.getItem(KEY)==='light'){ b.classList.add('light'); t.textContent='☀️'; }
+    t.addEventListener('click',function(){
+      var light=b.classList.toggle('light');
+      t.textContent=light?'☀️':'🌙';
+      localStorage.setItem(KEY, light?'light':'dark');
+    });
+  })();
+</script>
+</body>
+</html>
